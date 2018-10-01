@@ -23,6 +23,15 @@ export default {
   color: #2c3e50;
   height: 100%;
   width: 100%;
+  display: flex;
+  color: #000000bf;
+  background-repeat: initial;
+  overflow: auto;
+  background-color: #bb8634ed;
+  /* // background-color: #bb8634d1; */
+  background-image: url(https://www.transparenttextures.com/patterns/paper-3.png);
+  justify-content: center;
+  font-family: 'Lato', sans-serif;
 }
 
 html, body {
@@ -30,5 +39,14 @@ html, body {
   width: 100%;
   margin: 0px;
   overflow: auto;
+  display: flex;
+  color: #000000bf;
+  background-repeat: initial;
+  overflow: auto;
+  background-color: #bb8634ed;
+  /* // background-color: #bb8634d1; */
+  background-image: url(https://www.transparenttextures.com/patterns/paper-3.png);
+  justify-content: center;
+  font-family: 'Lato', sans-serif;
 }
 </style>

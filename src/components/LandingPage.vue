@@ -6,21 +6,25 @@
             TASTER
           </h1>
         </div>
-      <v-flex>
+      <v-flex v-on:mouseover="mouseOver">
         <h2 class="landing-page-sub">
-          A simple tool for recording tasting notes. 
+          A simple tool for recording tasting notes.
         </h2>
         <br/>
         <br/>
         <h2 class="landing-page-sub">
-          Open that beer... 
+          <!-- Open that beer... -->
         </h2>
         <img
           class="beer-image"
           src="../assets/beer.svg"
         />
         <h2 class="landing-page-sub">
-          and start tasting! 
+          <!-- and start tasting! -->
+        </h2>
+        <br/>
+        <h2 v-on:click="getStarted" class="landing-page-sub">
+          Click here to get started
         </h2>
       </v-flex>
     </v-layout>
@@ -30,6 +34,19 @@
 <script>
 export default {
   name: 'LandingPage',
+  data() {
+    return {
+      active: false,
+    };
+  },
+  methods: {
+    mouseOver() {
+      this.active = !this.active;
+    },
+    getStarted() {
+      this.$router.push('beer');
+    },
+  },
 };
 </script>
 
@@ -51,14 +68,7 @@ export default {
 .landing-page {
   height: 100%;
   width: 100%;
-  background-color: #d2a468;
   display: flex;
-  color: #000000bf;
-  background-repeat: initial;
-  overflow: auto;
-  background-color: #bb8634ed;
-  // background-color: #bb8634d1;
-  background-image: url(https://www.transparenttextures.com/patterns/paper-3.png);
   justify-content: center;
 }
 
