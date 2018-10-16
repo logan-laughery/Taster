@@ -49,4 +49,17 @@ html, body {
   justify-content: center;
   font-family: 'Lato', sans-serif;
 }
+
+.maroon--text {
+    color: #800000!important;
+}
+.maroon--text.text--darken-1 {
+    color: #740000!important;
+}
+.maroon--text.text--darken-2 {
+    color: #680000!important;
+}
+.maroon--text.text--darken-3 {
+    color: #5d0000!important;
+}
 </style>

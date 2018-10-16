@@ -2,6 +2,7 @@
 const defaultBeerNote = {
   id: 1,
   step: 'intro',
+  head: [],
 };
 
 function getBeerNote(id) {

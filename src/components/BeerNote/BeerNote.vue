@@ -3,22 +3,29 @@
     <v-flex v-if="loading">
       <dashed-spinner/>
     </v-flex>
-    <router-view v-else :note="note"/>
+    <template v-else>
+      <router-view :note="note" :options="options"/>
+      <footer-nav/>
+    </template>
   </v-layout>
 </template>
 
 <script>
 import DashedSpinner from '@/components/Shared/DashedSpinner';
+import FooterNav from '@/components/BeerNote/FooterNav';
 import beerNoteService from '../../services/beerNote';
+import beerNoteOptionsService from '../../services/beerNoteOptions';
 
 export default {
   name: 'BeerNote',
   components: {
     DashedSpinner,
+    FooterNav,
   },
   data: () => ({
     loading: true,
     note: {},
+    options: {},
   }),
   props: ['noteId'],
   async mounted() {
@@ -34,6 +41,7 @@ export default {
   methods: {
     async loadBeerNote() {
       this.loading = true;
+      this.options = await beerNoteOptionsService.getOptions();
       this.note = await beerNoteService.getBeerNote();
       this.loading = false;
 
@@ -44,4 +52,8 @@ export default {
 </script>
 
 <style>
+.beer-note {
+  margin: 0 20px;
+  padding: 50px 0;
+}
 </style>

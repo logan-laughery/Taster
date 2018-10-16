@@ -9,6 +9,9 @@ import BeerInfo from '@/components/BeerNote/Intro/BeerInfo';
 import PhotoVerification from '@/components/BeerNote/Intro/PhotoVerification';
 import StyleSelection from '@/components/BeerNote/Intro/StyleSelection';
 import Summary from '@/components/BeerNote/Intro/Summary';
+import Clarity from '@/components/BeerNote/Appearance/Clarity';
+import Color from '@/components/BeerNote/Appearance/Color';
+import Head from '@/components/BeerNote/Appearance/Head';
 import Loader from '@/components/BeerNote/Loader';
 
 Vue.use(Router);
@@ -55,6 +58,18 @@ export default new Router({
         {
           path: 'summary',
           component: Summary,
+        },
+        {
+          path: 'head',
+          component: Head,
+        },
+        {
+          path: 'color',
+          component: Color,
+        },
+        {
+          path: 'clarity',
+          component: Clarity,
         },
         {
           path: '',
