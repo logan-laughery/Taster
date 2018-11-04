@@ -16,16 +16,16 @@
   </v-flex>
 </template>
 
-<script>
+<script scoped>
 export default {
   name: 'BeerInfo',
   props: ['note'],
   mounted() {
     this.$store.commit('beerNote/updateFooterNav', {
-      forwardRoute: '/beer/1/summary',
+      forwardRoute: '/beer/1/introsummary',
       backRoute: '/beer/1/styleselection',
-      upperText: 'Intro 3/3',
-      lowerText: 'Overall Progress ?%',
+      upperText: 'Intro 3/4',
+      lowerText: 'Overall Progress 20%',
     });
   },
 };

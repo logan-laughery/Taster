@@ -14,7 +14,8 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "@stout/vue-dashed-spinner": "^0.2.0",
+    "@stout/vue-dashed-spinner": "^0.3.0",
+    "@stout/vue-radar-input": "0.1.3",
     "material-design-icons-iconfont": "^3.0.3",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",

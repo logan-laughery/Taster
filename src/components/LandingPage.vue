@@ -44,13 +44,13 @@ export default {
       this.active = !this.active;
     },
     getStarted() {
-      this.$router.push('beer');
+      this.$router.push({ path: '/beer/new' });
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 @import url('https://fonts.googleapis.com/css?family=Lato:900');
 

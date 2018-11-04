@@ -39,10 +39,28 @@ const defaultOptions = {
     'straw',
   ],
   aromaDescriptors: [
-
+    'burnt',
+    'nutty',
+    'citrus',
+    'pine',
+    'skunk',
+    'vanilla',
+    'bready',
+    'clove',
+    'fruity',
+    'phenolic',
   ],
   flavorDescriptors: [
-
+    'bready',
+    'wheaty',
+    'roasty',
+    'bitter',
+    'light',
+    'crisp',
+    'dry',
+    'lingering',
+    'boozey',
+    'warming',
   ],
 };
 

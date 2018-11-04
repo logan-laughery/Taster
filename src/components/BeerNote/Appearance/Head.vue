@@ -93,9 +93,9 @@ export default {
   mounted() {
     this.$store.commit('beerNote/updateFooterNav', {
       forwardRoute: '/beer/1/color',
-      backRoute: '/beer/1/summary',
+      backRoute: '/beer/1/introsummary',
       upperText: 'Appearance 1/3',
-      lowerText: 'Overall Progress 20%',
+      lowerText: 'Overall Progress 40%',
     });
   },
   methods: {
@@ -120,7 +120,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .faded {
   color: #00000090;
 }

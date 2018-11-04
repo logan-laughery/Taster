@@ -1,18 +1,14 @@
 <template>
   <v-flex>
-    <dashed-spinner/>
+    <DashedSpinner/>
   </v-flex>
 </template>
 
 <script>
-import DashedSpinner from '@/components/Shared/DashedSpinner';
 import beerNoteService from '../../services/beerNote';
 
 export default {
   name: 'Loader',
-  components: {
-    DashedSpinner,
-  },
   props: ['note'],
   async mounted() {
     await this.loadBeerNote();
@@ -23,7 +19,7 @@ export default {
       this.note = await beerNoteService.getBeerNote();
       this.loading = false;
 
-      this.$router.push({ path: '/beer/1/intro' });
+      this.$router.push({ path: '/#/beer/1/intro' });
     },
   },
 };
