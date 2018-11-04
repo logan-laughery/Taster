@@ -12,7 +12,7 @@
   </v-flex>
 </template>
 
-<script>
+<script scoped>
 export default {
   name: 'StyleSelection',
   props: ['note', 'options'],
@@ -25,8 +25,8 @@ export default {
     this.$store.commit('beerNote/updateFooterNav', {
       forwardRoute: '/beer/1/beerinfo',
       backRoute: '/beer/1/intro',
-      upperText: 'Intro 2/2',
-      lowerText: 'Overall Progress 20%',
+      upperText: 'Intro 2/4',
+      lowerText: 'Overall Progress 10%',
     });
   },
 };

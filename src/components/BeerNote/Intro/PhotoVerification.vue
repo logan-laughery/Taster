@@ -20,9 +20,9 @@
       </image-input>
     </v-flex>
     <v-flex class="identification-container">
-      <dashed-spinner v-if="identifying">
+      <DashedSpinner v-if="identifying">
         Identifying...
-      </dashed-spinner>
+      </DashedSpinner>
       <template v-else>
         <template v-if="match">
           <h3>A match was found!</h3>
@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import DashedSpinner from '@/components/Shared/DashedSpinner';
 import DashedBorder from '@/components/Shared/DashedBorder';
 import ImageInput from '@/components/Shared/ImageInput';
 import identificationService from '@/services/beerIdentification';
@@ -59,7 +58,6 @@ import identificationService from '@/services/beerIdentification';
 export default {
   name: 'PhotoVerification',
   components: {
-    DashedSpinner,
     DashedBorder,
     ImageInput,
   },
@@ -76,7 +74,7 @@ export default {
     this.$store.commit('beerNote/updateFooterNav', {
       forwardRoute: '/beer/1/styleselection',
       backRoute: '/beer/1/intro',
-      upperText: 'Intro 1/1',
+      upperText: 'Intro 2/4',
       lowerText: 'Overall Progress 10%',
     });
 
@@ -97,9 +95,9 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .beer-image-container {
-  padding-bottom: 40px;
+  padding-bottom: 30px;
 }
 .beer-image {
   border-radius: 25px;

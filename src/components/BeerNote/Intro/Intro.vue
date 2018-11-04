@@ -32,7 +32,7 @@
   </v-flex>
 </template>
 
-<script>
+<script scoped>
 import DashedCircle from '@/components/Shared/DashedCircle';
 import ImageInput from '@/components/Shared/ImageInput';
 
@@ -45,8 +45,8 @@ export default {
   mounted() {
     this.$store.commit('beerNote/updateFooterNav', {
       forwardRoute: '/beer/1/styleselection',
-      upperText: 'Intro 1/1',
-      lowerText: 'Overall Progress 10%',
+      upperText: 'Intro 1/4',
+      lowerText: 'Overall Progress 0%',
     });
   },
   props: ['note'],

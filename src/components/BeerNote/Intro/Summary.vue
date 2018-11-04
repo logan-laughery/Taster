@@ -18,7 +18,7 @@
   </v-flex>
 </template>
 
-<script>
+<script scoped>
 import DashedBorder from '@/components/Shared/DashedBorder';
 
 export default {
@@ -31,8 +31,8 @@ export default {
     this.$store.commit('beerNote/updateFooterNav', {
       forwardRoute: '/beer/1/head',
       backRoute: '/beer/1/beerinfo',
-      upperText: 'Intro 2/2',
-      lowerText: 'Overall Progress 20%',
+      upperText: 'Intro 4/4',
+      lowerText: 'Overall Progress 30%',
     });
   },
 };
