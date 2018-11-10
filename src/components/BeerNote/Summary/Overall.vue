@@ -12,12 +12,12 @@
     <h3 class="headline mb-0">
       Rating
     </h3>
-    <v-radio-group v-model="note.rating" row>
-      <v-radio label="1" value="1" color="black"></v-radio>
-      <v-radio label="2" value="2" color="black"></v-radio>
-      <v-radio label="3" value="3" color="black"></v-radio>
-      <v-radio label="4" value="4" color="black"></v-radio>
-      <v-radio label="5" value="5" color="black"></v-radio>
+    <v-radio-group v-model="note.rating" row class="centered-radios">
+      <v-radio label="1" value="1" color="black" class="centered-radio"></v-radio>
+      <v-radio label="2" value="2" color="black" class="centered-radio"></v-radio>
+      <v-radio label="3" value="3" color="black" class="centered-radio"></v-radio>
+      <v-radio label="4" value="4" color="black" class="centered-radio"></v-radio>
+      <v-radio label="5" value="5" color="black" class="centered-radio"></v-radio>
     </v-radio-group>
   </v-flex>
 </template>
@@ -52,10 +52,21 @@ export default {
   fill: rgba(60, 112, 60, 0.56);
 }
 
-.overall .v-input--radio-group--row .v-input--radio-group__input {
-  justify-content: center;
+.overall .v-input--radio-group__input {
+  justify-content: center !important;
 }
 
+.centered-radios > :first-child > :first-child > :first-child {
+  justify-content: center !important;
+}
+
+.overall .v-input--selection-controls__input {
+  margin-right: 0px !important;
+}
+
+.centered-radio > :first-child {
+  margin-right: 0px !important;
+}
 .overall .v-input--radio-group .v-radio {
   flex-direction: column;
 }

@@ -17,6 +17,7 @@ import Flavor from '@/components/BeerNote/Flavor/Flavor';
 import Summary from '@/components/BeerNote/Summary/Summary';
 import Overall from '@/components/BeerNote/Summary/Overall';
 import Loader from '@/components/BeerNote/Loader';
+import Login from '@/components/Account/Login';
 
 Vue.use(Router);
 
@@ -31,6 +32,11 @@ export default new Router({
       path: '/material',
       name: 'Material',
       component: Material,
+    },
+    {
+      path: '/account/login',
+      name: 'Login',
+      component: Login,
     },
     {
       path: '/hello',
