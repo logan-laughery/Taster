@@ -13,6 +13,7 @@
 <script>
 import FooterNav from '@/components/BeerNote/FooterNav';
 import beerNoteService from '../../services/beerNote';
+import accountService from '../../services/account';
 import beerNoteOptionsService from '../../services/beerNoteOptions';
 
 export default {
@@ -33,6 +34,19 @@ export default {
     //   id: this.noteId,
     //   step: 'intro',
     // };
+    // navigating
+    const currentUser = await accountService.getCurrentUser();
+
+    if (!currentUser) {
+      this.$router.push({
+        name: 'Login',
+        params: { route: this.$route.path },
+      });
+
+      return;
+    }
+
+    // console.log('currentUser', currentUser);
 
     await this.loadBeerNote();
   },

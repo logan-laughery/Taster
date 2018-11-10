@@ -1,16 +1,25 @@
 <template>
   <div id="app">
     <v-app>
+      <title-header/>
       <v-content>
         <router-view/>
       </v-content>
+      <side-nav/>
     </v-app>
   </div>
 </template>
 
 <script>
+import SideNav from '@/components/Layout/SideNav';
+import TitleHeader from '@/components/Layout/TitleHeader';
+
 export default {
   name: 'App',
+  components: {
+    SideNav,
+    TitleHeader,
+  },
 };
 </script>
 

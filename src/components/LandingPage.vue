@@ -51,9 +51,6 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css?family=Roboto');
-@import url('https://fonts.googleapis.com/css?family=Lato:900');
-
 .beer-image {
   width: 108px;
   opacity: .8;
@@ -84,6 +81,8 @@ export default {
 
 .landing-page-sub {
   font-family: 'Lato', sans-serif;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .other-paper {
