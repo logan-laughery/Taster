@@ -1,12 +1,37 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <v-app>
+      <title-header/>
+      <v-content>
+        <router-view/>
+      </v-content>
+      <side-nav/>
+    </v-app>
   </div>
 </template>
+
+<script>
+import SideNav from '@/components/Layout/SideNav';
+import TitleHeader from '@/components/Layout/TitleHeader';
+
+export default {
+  name: 'App',
+  components: {
+    SideNav,
+    TitleHeader,
+  },
+  mounted() {
+    console.log('mounted');
+
+    window.addEventListener('resize', this.handleResize);
+  },
+  methods: {
+    handleResize() {
+      this.$store.commit('layout/updateNeedScrolling', true);
+    },
+  }
+};
+</script>
 
 <style>
 #app {
@@ -15,17 +40,47 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-#nav {
-  padding: 30px;
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+  display: flex;
+  color: #000000bf;
+  background-repeat: initial;
+  overflow: auto;
+  background-color: #bb8634ed;
+  /* // background-color: #bb8634d1; */
+  background-image: url(https://www.transparenttextures.com/patterns/paper-3.png);
+  justify-content: center;
+  font-family: 'Lato', sans-serif;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+html, body {
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+  margin: 0px;
+  overflow: auto;
+  display: flex;
+  color: #000000bf;
+  background-repeat: initial;
+  overflow: auto;
+  background-color: #bb8634ed;
+  /* // background-color: #bb8634d1; */
+  background-image: url(https://www.transparenttextures.com/patterns/paper-3.png);
+  justify-content: center;
+  font-family: 'Lato', sans-serif;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+.maroon--text {
+    color: #800000!important;
+}
+.maroon--text.text--darken-1 {
+    color: #740000!important;
+}
+.maroon--text.text--darken-2 {
+    color: #680000!important;
+}
+.maroon--text.text--darken-3 {
+    color: #5d0000!important;
 }
 </style>
