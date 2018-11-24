@@ -100,7 +100,7 @@ export default {
     items() {
       return [
         { header: 'Start typing to create a descriptor or select from the options below' },
-        ...this.options.headDescriptors
+        ...this.options.headDescriptors,
       ];
     },
   },

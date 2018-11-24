@@ -1,10 +1,8 @@
 <template>
   <div id="app">
     <v-app>
-      <title-header/>
-      <v-content>
-        <router-view/>
-      </v-content>
+      <title-header :hasShadow="scrolling"/>
+      <router-view class="router-container" id="router-container"/>
       <side-nav/>
     </v-app>
   </div>
@@ -20,16 +18,25 @@ export default {
     SideNav,
     TitleHeader,
   },
+  data() {
+    return {
+      scrolling: false,
+    };
+  },
   mounted() {
-    console.log('mounted');
-
     window.addEventListener('resize', this.handleResize);
+    this.handleResize();
   },
   methods: {
     handleResize() {
-      this.$store.commit('layout/updateNeedScrolling', true);
+      const container = document.getElementById('router-container');
+
+      if (container) {
+        this.scrolling = container.scrollHeight > container.clientHeight;
+        this.$store.commit('layout/updateNeedScrolling', this.scrolling);
+      }
     },
-  }
+  },
 };
 </script>
 
@@ -52,6 +59,11 @@ export default {
   background-image: url(https://www.transparenttextures.com/patterns/paper-3.png);
   justify-content: center;
   font-family: 'Lato', sans-serif;
+}
+
+#app .router-container {
+  min-height: calc(100% - 56px);
+  overflow: auto;
 }
 
 html, body {

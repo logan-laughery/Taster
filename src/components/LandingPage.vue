@@ -1,6 +1,6 @@
 <template>
   <div class="landing-page">
-    <v-layout column>
+    <v-layout column class="landing-page-container">
         <div class="landing-page-header">
           <h1 class="landing-page-text">
             TASTER
@@ -22,14 +22,41 @@
         <h2 class="landing-page-sub">
           <!-- and start tasting! -->
         </h2>
+
         <br/>
-        <h2 class="landing-page-sub" v-on:click="prompt">
-          {{isPwa}}
+        <h2 v-if="!isMobile" class="landing-page-sub">
+          This application is intended for mobile use only.
+          <br/>
+          Large screen size support may be added in the future.
         </h2>
-        <br/>
-        <h2 v-on:click="getStarted" class="landing-page-sub">
-          Click here to get started
-        </h2>
+        <template v-else>
+          <template v-if="deferredPrompt">
+            <br/>
+            <h2 class="landing-page-sub">
+              To use taster, please install the application
+            </h2>
+            <br/>
+            <v-btn outline v-on:click="prompt">
+              Install Application
+            </v-btn>
+            <br/>
+          </template>
+          <template v-if="!deferredPrompt && !isStandalone">
+            <br/>
+            <h2 class="landing-page-sub">
+              Have you already installed the app?
+            </h2>
+            <br/>
+            <v-btn outline href="https://taster-216901.firebaseapp.com" target="_blank">
+              Open Application
+            </v-btn>
+            <br/>
+          </template>
+          <br/>
+          <h2 v-if="isStandalone" v-on:click="getStarted" class="landing-page-sub">
+            Click here to get started
+          </h2>
+        </template>
       </v-flex>
     </v-layout>
   </div>
@@ -43,13 +70,17 @@ export default {
       active: false,
       isPwa: '',
       deferredPrompt: undefined,
+      isStandalone: false,
+      isMobile: false,
     };
   },
   mounted() {
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      this.isPwa = 'Installed as PWA!  Nice work!';
-    } else {
-      this.isPwa = 'Not Installed as PWA...';
+    if (process.env.NODE_ENV === 'development') {
+      this.isStandalone = true;
+    }
+
+    if (window.screen.width < 600) {
+      this.isMobile = true;
     }
 
     window.addEventListener('beforeinstallprompt', (e) => {
@@ -57,13 +88,14 @@ export default {
       e.preventDefault();
       // Stash the event so it can be triggered later.
       this.deferredPrompt = e;
-      alert(e);
     });
+
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      this.isStandalone = true;
+    }
   },
   methods: {
     prompt() {
-      alert('clicked');
-
       this.deferredPrompt.prompt();
     },
     mouseOver() {
@@ -86,6 +118,7 @@ export default {
 .landing-page-header {
   position: relative;
   height: 30%;
+  min-height: 72px;
 }
 
 .landing-page {
@@ -93,6 +126,10 @@ export default {
   width: 100%;
   display: flex;
   justify-content: center;
+}
+
+.landing-page-container {
+  min-height: min-content;
 }
 
 .landing-page-text {

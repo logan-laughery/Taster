@@ -1,13 +1,17 @@
 <template>
-  <v-layout class="beer-note" fill-height align-center justify-center>
-    <v-flex v-if="loading">
-      <DashedSpinner/>
-    </v-flex>
-    <template v-else>
-      <router-view :note="note" :options="options"/>
-      <footer-nav/>
-    </template>
-  </v-layout>
+  <div class="beer-note-container">
+      <v-layout v-if="loading" class="beer-note" fill-height align-center justify-center>
+        <v-flex>
+          <DashedSpinner/>
+        </v-flex>
+      </v-layout>
+      <template v-else>
+        <v-layout class="beer-note" fill-height align-center justify-center>
+          <router-view :note="note" :options="options"/>
+        </v-layout>
+        <footer-nav/>
+      </template>
+  </div>
 </template>
 
 <script>
@@ -69,6 +73,17 @@ export default {
 <style scoped>
 .beer-note {
   margin: 0 20px;
-  padding: 50px 0;
+  min-height: min-content;
+}
+
+.beer-note-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 2px;
+}
+.beer-note > * {
+  max-width: 500px;
 }
 </style>

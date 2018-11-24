@@ -58,10 +58,9 @@ export default {
   line-height: 1;
 }
 .footer-nav {
-  position: fixed;
-  left: 0px;
-  bottom: 8px;
   width: 100%;
+  padding-bottom: 8px;
+  padding-top: 8px;
 }
 .v-btn {
   margin-top: 0px!important;

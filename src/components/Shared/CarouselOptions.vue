@@ -69,8 +69,7 @@ export default {
       const size = 8;
 
       return this.options.reduce(
-        (acc, cur, i) =>
-          (i % size ? acc : [...acc, this.options.slice(i, i + size)]),
+        (acc, cur, i) => (i % size ? acc : [...acc, this.options.slice(i, i + size)]),
         [],
       );
     },

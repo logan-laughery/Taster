@@ -28,10 +28,6 @@
       <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
     </ul>
-    test
-    <button v-on:click="prompt">
-      Attempt Install {{isPwa}}
-    </button>
   </div>
 </template>
 
@@ -47,28 +43,6 @@ export default {
       isPwa: '',
       deferredPrompt: undefined,
     };
-  },
-  mounted() {
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      this.isPwa = 'Installed as PWA!  Nice work!';
-    } else {
-      this.isPwa = 'Not Installed as PWA...';
-    }
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-      // Prevent Chrome 67 and earlier from automatically showing the prompt
-      e.preventDefault();
-      // Stash the event so it can be triggered later.
-      this.deferredPrompt = e;
-      alert(e);
-    });
-  },
-  methods: {
-    prompt() {
-      alert('clicked');
-
-      this.deferredPrompt.prompt();
-    },
   },
 };
 </script>

@@ -36,8 +36,8 @@ export default {
       return Array.from(Array(this.arcCount).keys())
         .map((index) => {
           const initialLoc = (this.arcSize / 2) + 90;
-          const location = index === 0 ? initialLoc :
-            ((this.arcSize + this.arcSpacing) * index) + initialLoc;
+          const location = index === 0 ? initialLoc
+            : ((this.arcSize + this.arcSpacing) * index) + initialLoc;
           const delay = (this.duration / 4 / this.arcCount) * index;
 
           return {
