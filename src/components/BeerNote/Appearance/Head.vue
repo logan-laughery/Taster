@@ -29,34 +29,15 @@
               </template>
               <template
                 slot="item"
-                slot-scope="data"
               >
                 <span/>
               </template>
-              <!--
-              <template
-                slot="selection"
-                slot-scope="data"
-              >
-                <v-chip
-                  :selected="data.selected"
-                  close
-                  label
-                  outline
-                  color="black"
-                  class="chip--select-multi"
-                  @input="remove(data.item)"
-                >
-                  {{ data.item }}
-                </v-chip>
-              </template>
-              -->
             </v-combobox>
           </div>
         </v-layout>
       </v-flex>
       <v-flex d-flex>
-        <v-layout column justify-end>
+        <v-layout column justify-center>
           <div class="bottom">
             <!-- <dashed-divider/> -->
             <h3 class="subheader mb-2 faded">
@@ -75,14 +56,13 @@
 </template>
 
 <script>
+import beerNoteService from '../../../services/beerNote';
 import CarouselOptions from '@/components/Shared/CarouselOptions';
-import DashedDivider from '@/components/Shared/DashedDivider';
 
 export default {
   name: 'Head',
   components: {
     CarouselOptions,
-    DashedDivider,
   },
   data() {
     return {
@@ -105,9 +85,11 @@ export default {
     },
   },
   mounted() {
+    this.note.step = 'head';
+    beerNoteService.saveBeerNote(this.note);
     this.$store.commit('beerNote/updateFooterNav', {
-      forwardRoute: '/beer/1/color',
-      backRoute: '/beer/1/introsummary',
+      forwardRoute: `/beer/${this.note.id}/color`,
+      backRoute: `/beer/${this.note.id}/introsummary`,
       upperText: 'Appearance 1/3',
       lowerText: 'Overall Progress 40%',
     });
@@ -115,9 +97,9 @@ export default {
   methods: {
     addItem(item) {
       if (this.note.head) {
-        this.note.head.push(item);
+        this.note.head.push(item.toLowerCase());
       } else {
-        this.note.head = [item];
+        this.note.head = [item.toLowerCase()];
       }
     },
     remove(item) {

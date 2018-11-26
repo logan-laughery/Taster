@@ -12,12 +12,14 @@
 
             <v-combobox
               v-model="note.aroma"
-              :items="options.aromaDescriptors"
+              :items="items"
+              :filter="noFilter"
               :hide-no-data="!search"
               :search-input.sync="search"
               hide-selected color="black"
               placeholder="Search for descriptor or create one"
               multiple
+              class="custom-combo"
             >
               <template slot="no-data">
                 <v-list-tile @click="addItem(search)">
@@ -27,12 +29,17 @@
                   </v-chip>
                 </v-list-tile>
               </template>
+              <template
+                slot="item"
+              >
+                <span/>
+              </template>
             </v-combobox>
           </div>
         </v-layout>
       </v-flex>
       <v-flex d-flex>
-        <v-layout column justify-end>
+        <v-layout column justify-center>
           <div class="bottom">
             <h3 class="subheader mb-2 faded">
               Common Descriptors
@@ -50,6 +57,7 @@
 </template>
 
 <script>
+import beerNoteService from '../../../services/beerNote';
 import CarouselOptions from '@/components/Shared/CarouselOptions';
 
 export default {
@@ -70,11 +78,19 @@ export default {
         isSelected: this.note.aroma.includes(option),
       }));
     },
+    items() {
+      return [
+        { header: 'Start typing to create a descriptor or select from the options below' },
+        ...this.options.aromaDescriptors,
+      ];
+    },
   },
   mounted() {
+    this.note.step = 'aroma';
+    beerNoteService.saveBeerNote(this.note);
     this.$store.commit('beerNote/updateFooterNav', {
-      forwardRoute: '/beer/1/flavor',
-      backRoute: '/beer/1/color',
+      forwardRoute: `/beer/${this.note.id}/flavor`,
+      backRoute: `/beer/${this.note.id}/color`,
       upperText: 'Aroma 1/1',
       lowerText: 'Overall Progress 70%',
     });
@@ -82,9 +98,9 @@ export default {
   methods: {
     addItem(item) {
       if (this.note.aroma) {
-        this.note.aroma.push(item);
+        this.note.aroma.push(item.toLowerCase());
       } else {
-        this.note.aroma = [item];
+        this.note.aroma = [item.toLowerCase()];
       }
     },
     remove(item) {
@@ -97,9 +113,23 @@ export default {
     carouselDeselection(option) {
       this.remove(option.text);
     },
+    noFilter() {
+      return undefined;
+    },
   },
 };
 </script>
 
 <style>
+.faded {
+  color: #00000090;
+}
+
+.v-autocomplete__content .v-select-list .v-list__tile {
+  height: auto;
+  overflow: hidden;
+}
+.v-autocomplete__content .v-select-list .v-list__tile__content {
+  height: 48px;
+}
 </style>

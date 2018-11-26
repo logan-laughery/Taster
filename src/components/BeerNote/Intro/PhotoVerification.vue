@@ -3,10 +3,12 @@
     <v-flex class="beer-image-container">
       <dashed-border>
         <div
+          v-if="image"
           class="beer-image"
           v-bind:style="{ backgroundImage: 'url(' + image + ')' }"
           style="width: 100%; height: 100%;"
         />
+        <span v-else>No Image</span>
       </dashed-border>
       <image-input v-on:input="imageInput">
         <v-btn
@@ -51,6 +53,7 @@
 </template>
 
 <script>
+import beerNoteService from '../../../services/beerNote';
 import DashedBorder from '@/components/Shared/DashedBorder';
 import ImageInput from '@/components/Shared/ImageInput';
 import identificationService from '@/services/beerIdentification';
@@ -71,9 +74,10 @@ export default {
   },
   async mounted() {
     this.image = this.note.image;
+    beerNoteService.saveBeerNote(this.note);
     this.$store.commit('beerNote/updateFooterNav', {
-      forwardRoute: '/beer/1/styleselection',
-      backRoute: '/beer/1/intro',
+      forwardRoute: `/beer/${this.note.id}/styleselection`,
+      backRoute: `/beer/${this.note.id}/intro`,
       upperText: 'Intro 2/4',
       lowerText: 'Overall Progress 10%',
     });

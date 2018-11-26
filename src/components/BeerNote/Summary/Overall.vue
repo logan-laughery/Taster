@@ -23,13 +23,17 @@
 </template>
 
 <script>
+import beerNoteService from '../../../services/beerNote';
+
 export default {
   name: 'Overall',
   props: ['note'],
   mounted() {
+    this.note.step = 'overall';
+    beerNoteService.saveBeerNote(this.note);
     this.$store.commit('beerNote/updateFooterNav', {
-      forwardRoute: '/beer/1/summary',
-      backRoute: '/beer/1/flavor',
+      forwardRoute: `/beer/${this.note.id}/summary`,
+      backRoute: `/beer/${this.note.id}/flavor`,
       upperText: 'Summary 1/2',
       lowerText: 'Overall Progress 90%',
     });
@@ -37,19 +41,19 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .character-radar .radar-label {
   font-size: 3px;
 }
 
 .character-radar .radar-highlight {
   fill: rgba(114,160,114,.75);
-  stroke: rgba(60, 112, 60, 0.56);
+  stroke: rgb(99, 132, 95) !important;
   stroke-width: .5px;
 }
 
 .character-radar .radar-point {
-  fill: rgba(60, 112, 60, 0.56);
+  fill: rgb(99, 132, 95) !important;
 }
 
 .overall .v-input--radio-group__input {

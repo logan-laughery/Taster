@@ -10,12 +10,14 @@
 
             <v-combobox
               v-model="note.color"
-              :items="options.colorDescriptors"
+              :items="items"
+              :filter="noFilter"
               :hide-no-data="!search"
               :search-input.sync="search"
               hide-selected color="black"
               placeholder="Search for descriptor or create one"
               multiple
+              class="custom-combo"
             >
               <template slot="no-data">
                 <v-list-tile @click="addItem(search)">
@@ -25,12 +27,17 @@
                   </v-chip>
                 </v-list-tile>
               </template>
+              <template
+                slot="item"
+              >
+                <span/>
+              </template>
             </v-combobox>
           </div>
         </v-layout>
       </v-flex>
       <v-flex d-flex>
-        <v-layout column justify-end>
+        <v-layout column justify-center>
           <div class="bottom">
             <h3 class="subheader mb-2 faded">
               Common Descriptors
@@ -48,6 +55,7 @@
 </template>
 
 <script>
+import beerNoteService from '../../../services/beerNote';
 import CarouselOptions from '@/components/Shared/CarouselOptions';
 
 export default {
@@ -68,11 +76,19 @@ export default {
         isSelected: this.note.color.includes(option),
       }));
     },
+    items() {
+      return [
+        { header: 'Start typing to create a descriptor or select from the options below' },
+        ...this.options.colorDescriptors,
+      ];
+    },
   },
   mounted() {
+    this.note.step = 'color';
+    beerNoteService.saveBeerNote(this.note);
     this.$store.commit('beerNote/updateFooterNav', {
-      forwardRoute: '/beer/1/clarity',
-      backRoute: '/beer/1/head',
+      forwardRoute: `/beer/${this.note.id}/clarity`,
+      backRoute: `/beer/${this.note.id}/head`,
       upperText: 'Appearance 2/3',
       lowerText: 'Overall Progress 50%',
     });
@@ -80,9 +96,9 @@ export default {
   methods: {
     addItem(item) {
       if (this.note.color) {
-        this.note.color.push(item);
+        this.note.color.push(item.toLowerCase());
       } else {
-        this.note.color = [item];
+        this.note.color = [item.toLowerCase()];
       }
     },
     remove(item) {
@@ -95,9 +111,23 @@ export default {
     carouselDeselection(option) {
       this.remove(option.text);
     },
+    noFilter() {
+      return undefined;
+    },
   },
 };
 </script>
 
 <style>
+.faded {
+  color: #00000090;
+}
+
+.v-autocomplete__content .v-select-list .v-list__tile {
+  height: auto;
+  overflow: hidden;
+}
+.v-autocomplete__content .v-select-list .v-list__tile__content {
+  height: 48px;
+}
 </style>

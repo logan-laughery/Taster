@@ -28,7 +28,18 @@
       <v-list>
         <v-divider></v-divider>
 
-        <v-list-tile v-on:click="close">
+        <v-list-tile v-on:click="newNote">
+          <v-list-tile-action>
+            <v-icon>note_add</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>New Beer Note</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-divider></v-divider>
+
+        <v-list-tile v-on:click="list">
           <v-list-tile-action>
             <v-icon>dashboard</v-icon>
           </v-list-tile-action>
@@ -39,7 +50,7 @@
 
         <v-divider></v-divider>
 
-        <v-list-tile v-on:click="close">
+        <v-list-tile v-on:click="settings">
           <v-list-tile-action>
             <v-icon>settings</v-icon>
           </v-list-tile-action>
@@ -92,6 +103,18 @@ export default {
   methods: {
     close() {
       this.drawer = false;
+    },
+    list() {
+      this.close();
+      this.$router.push({ path: '/beer/list' });
+    },
+    settings() {
+      this.close();
+      this.$router.push({ path: '/settings' });
+    },
+    newNote() {
+      this.close();
+      this.$router.push({ path: '/beer/new' });
     },
     userUpdated(user) {
       this.currentUser = user;

@@ -13,6 +13,8 @@
 </template>
 
 <script scoped>
+import beerNoteService from '../../../services/beerNote';
+
 export default {
   name: 'StyleSelection',
   props: ['note', 'options'],
@@ -22,9 +24,11 @@ export default {
     },
   },
   mounted() {
+    this.note.step = 'styleselection';
+    beerNoteService.saveBeerNote(this.note);
     this.$store.commit('beerNote/updateFooterNav', {
-      forwardRoute: '/beer/1/beerinfo',
-      backRoute: '/beer/1/intro',
+      forwardRoute: `/beer/${this.note.id}/beerinfo`,
+      backRoute: `/beer/${this.note.id}/intro`,
       upperText: 'Intro 2/4',
       lowerText: 'Overall Progress 10%',
     });

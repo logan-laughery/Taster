@@ -18,10 +18,14 @@ import Summary from '@/components/BeerNote/Summary/Summary';
 import Overall from '@/components/BeerNote/Summary/Overall';
 import Loader from '@/components/BeerNote/Loader';
 import Login from '@/components/Account/Login';
+import BeerNoteList from '@/components/BeerNote/List/List';
+import Settings from '@/components/Account/Settings';
+
 
 Vue.use(Router);
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -42,6 +46,16 @@ export default new Router({
       path: '/hello',
       name: 'HelloWorld',
       component: HelloWorld,
+    },
+    {
+      path: '/beer/list',
+      name: 'BeerNotes',
+      component: BeerNoteList,
+    },
+    {
+      path: '/settings',
+      name: 'Settings',
+      component: Settings,
     },
     {
       path: '/beer/:noteId',

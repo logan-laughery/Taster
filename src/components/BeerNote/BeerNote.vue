@@ -32,13 +32,6 @@ export default {
   }),
   props: ['noteId'],
   async mounted() {
-    // Grab the note id from the params and load the note object
-    // Create one if no param is passed
-    // this.note = {
-    //   id: this.noteId,
-    //   step: 'intro',
-    // };
-    // navigating
     const currentUser = await accountService.getCurrentUser();
 
     if (!currentUser) {
@@ -50,9 +43,12 @@ export default {
       return;
     }
 
-    // console.log('currentUser', currentUser);
-
     await this.loadBeerNote();
+  },
+  watch: {
+    noteId: async function(newVal, oldVal) {
+      await this.loadBeerNote();
+    }
   },
   methods: {
     async loadBeerNote() {
@@ -64,7 +60,7 @@ export default {
       this.note = await beerNoteService.getBeerNote(id);
       this.loading = false;
 
-      this.$router.push({ path: '/beer/1/intro' });
+      this.$router.push({ path: `/beer/${this.note.id}/${this.note.step}` });
     },
   },
 };

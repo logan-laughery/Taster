@@ -43,8 +43,9 @@ export default {
     ImageInput,
   },
   mounted() {
+    this.note.step = 'intro';
     this.$store.commit('beerNote/updateFooterNav', {
-      forwardRoute: '/beer/1/styleselection',
+      forwardRoute: `/beer/${this.note.id}/styleselection`,
       upperText: 'Intro 1/4',
       lowerText: 'Overall Progress 0%',
     });
@@ -53,7 +54,7 @@ export default {
   methods: {
     imageInput(event) {
       this.note.image = event.dataUrl;
-      this.$router.push({ path: '/beer/1/photoverification' });
+      this.$router.push({ path: `/beer/${this.note.id}/photoverification` });
     },
   },
 };

@@ -17,13 +17,17 @@
 </template>
 
 <script scoped>
+import beerNoteService from '../../../services/beerNote';
+
 export default {
   name: 'BeerInfo',
   props: ['note'],
   mounted() {
+    this.note.step = 'beerinfo';
+    beerNoteService.saveBeerNote(this.note);
     this.$store.commit('beerNote/updateFooterNav', {
-      forwardRoute: '/beer/1/introsummary',
-      backRoute: '/beer/1/styleselection',
+      forwardRoute: `/beer/${this.note.id}/introsummary`,
+      backRoute: `/beer/${this.note.id}/styleselection`,
       upperText: 'Intro 3/4',
       lowerText: 'Overall Progress 20%',
     });

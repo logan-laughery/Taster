@@ -10,12 +10,14 @@
 
             <v-combobox
               v-model="note.clarity"
-              :items="options.clarityDescriptors"
+              :items="items"
+              :filter="noFilter"
               :hide-no-data="!search"
               :search-input.sync="search"
               hide-selected color="black"
               placeholder="Search for descriptor or create one"
               multiple
+              class="custom-combo"
             >
               <template slot="no-data">
                 <v-list-tile @click="addItem(search)">
@@ -25,12 +27,17 @@
                   </v-chip>
                 </v-list-tile>
               </template>
+              <template
+                slot="item"
+              >
+                <span/>
+              </template>
             </v-combobox>
           </div>
         </v-layout>
       </v-flex>
       <v-flex d-flex>
-        <v-layout column justify-end>
+        <v-layout column justify-center>
           <div class="bottom">
             <h3 class="subheader mb-2 faded">
               Common Descriptors
@@ -48,6 +55,7 @@
 </template>
 
 <script>
+import beerNoteService from '../../../services/beerNote';
 import CarouselOptions from '@/components/Shared/CarouselOptions';
 
 export default {
@@ -68,11 +76,19 @@ export default {
         isSelected: this.note.clarity.includes(option),
       }));
     },
+    items() {
+      return [
+        { header: 'Start typing to create a descriptor or select from the options below' },
+        ...this.options.clarityDescriptors,
+      ];
+    },
   },
   mounted() {
+    this.note.step = 'clarity';
+    beerNoteService.saveBeerNote(this.note);
     this.$store.commit('beerNote/updateFooterNav', {
-      forwardRoute: '/beer/1/aroma',
-      backRoute: '/beer/1/color',
+      forwardRoute: `/beer/${this.note.id}/aroma`,
+      backRoute: `/beer/${this.note.id}/color`,
       upperText: 'Appearance 3/3',
       lowerText: 'Overall Progress 60%',
     });
@@ -80,9 +96,9 @@ export default {
   methods: {
     addItem(item) {
       if (this.note.clarity) {
-        this.note.clarity.push(item);
+        this.note.clarity.push(item.toLowerCase());
       } else {
-        this.note.clarity = [item];
+        this.note.clarity = [item.toLowerCase()];
       }
     },
     remove(item) {
@@ -95,9 +111,23 @@ export default {
     carouselDeselection(option) {
       this.remove(option.text);
     },
+    noFilter() {
+      return undefined;
+    },
   },
 };
 </script>
 
 <style>
+.faded {
+  color: #00000090;
+}
+
+.v-autocomplete__content .v-select-list .v-list__tile {
+  height: auto;
+  overflow: hidden;
+}
+.v-autocomplete__content .v-select-list .v-list__tile__content {
+  height: 48px;
+}
 </style>

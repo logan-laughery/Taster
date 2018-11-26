@@ -58,10 +58,17 @@
           <v-flex d-flex>
             <dashed-border class="summary-image">
               <div
+                v-if="note.image"
                 class="beer-image"
                 v-bind:style="{ backgroundImage: 'url(' + note.image + ')' }"
                 style="width: 100%; height: 100%;"
               />
+              <span
+                v-else
+                class="no-image"
+              >
+                No Image Selected
+              </span>
             </dashed-border>
           </v-flex>
         </v-layout>
@@ -140,6 +147,7 @@
 </template>
 
 <script>
+import beerNoteService from '../../../services/beerNote';
 import DashedBorder from '@/components/Shared/DashedBorder';
 
 export default {
@@ -149,9 +157,11 @@ export default {
     DashedBorder,
   },
   mounted() {
+    this.note.step = 'summary';
+    beerNoteService.saveBeerNote(this.note);
     this.$store.commit('beerNote/updateFooterNav', {
-      forwardRoute: '/beer/1/complete',
-      backRoute: '/beer/1/overall',
+      forwardRoute: `/beer/list`,
+      backRoute: `/beer/${this.note.id}/overall`,
       upperText: 'Summary 2/2',
       lowerText: 'Overall Progress 100%',
     });
@@ -193,11 +203,11 @@ svg.summary-image {
 }
 .character-radar .radar-highlight {
   fill: rgba(114,160,114,.75);
-  stroke: rgba(60, 112, 60, 0.56);
+  stroke: rgb(99, 132, 95);
   stroke-width: .5px;
 }
 .character-radar .radar-point {
-  fill: rgba(60, 112, 60, 0.56);
+  fill: rgb(99, 132, 95);
 }
 .summary .character-radar.radar-input {
   width: 225px !important;
@@ -212,5 +222,13 @@ svg.summary-image {
 }
 .rating-footer {
   height: 150px;
+}
+.no-image {
+  height: 100%;
+  font-size: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 </style>
