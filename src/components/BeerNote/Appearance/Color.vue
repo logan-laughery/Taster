@@ -29,6 +29,7 @@
               </template>
               <template
                 slot="item"
+                slot-scope="data"
               >
                 <span/>
               </template>
