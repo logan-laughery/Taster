@@ -1,8 +1,8 @@
 import firebase from 'firebase';
+import shortid from 'shortid';
 import accountService from './account';
 
 const defaultBeerNote = {
-  id: 1,
   step: 'intro',
   head: [],
   color: [],
@@ -23,36 +23,24 @@ const defaultBeerNote = {
 };
 
 function getBeerNote(id) {
-  const userId = firebase.auth().currentUser.email.replace(/\./g,'%2E');
+  const userId = accountService.getCurrentUserId();
 
   if (!id) {
-    const userRef = firebase.database().ref(`/users/${userId}`);
-
-    return userRef.once('value').then((snapshot) => {
-      const user = snapshot.val();
-
-      if (!user || !user.beerNotes) {
-        defaultBeerNote.id = 0;
-      } else {
-        const [last] = Object.keys(user.beerNotes).slice(-1);
-        const nextId = Number.parseInt(last, 10) + 1;
-
-        defaultBeerNote.id = nextId;
-      }
-
-      return defaultBeerNote;
+    const newNote = Object.assign({}, defaultBeerNote, {
+      id: shortid.generate(),
+      uid: userId,
     });
+
+    return newNote;
   }
 
-  return firebase.database().ref(`/users/${userId}/beerNotes/${id}`)
+  return firebase.database().ref(`/beerNotes/${id}`)
     .once('value')
     .then(snapshot => Object.assign({}, defaultBeerNote, snapshot.val()));
 }
 
 function saveBeerNote(beerNote) {
-  const userId = firebase.auth().currentUser.email.replace(/\./g,'%2E');
-
-  return firebase.database().ref(`/users/${userId}/beerNotes/${beerNote.id}`)
+  return firebase.database().ref(`/beerNotes/${beerNote.id}`)
     .set(beerNote)
     .then(() => beerNote);
 
@@ -60,9 +48,11 @@ function saveBeerNote(beerNote) {
 }
 
 function getCurrentUserBeerNotes() {
-  const userId = firebase.auth().currentUser.email.replace(/\./g,'%2E');
+  const userId = accountService.getCurrentUserId();
 
-  return firebase.database().ref(`/users/${userId}/beerNotes`)
+  return firebase.database().ref('beerNotes')
+    .orderByChild('uid')
+    .equalTo(userId)
     .once('value')
     .then((snapshot) => {
       const devices = [];
@@ -78,7 +68,9 @@ function getCurrentUserBeerNotes() {
 }
 
 function getLinkedNote(user) {
-  return firebase.database().ref(`/users/${user}/beerNotes`)
+  return firebase.database().ref('/beerNotes')
+    .orderByChild('uid')
+    .equalTo(user)
     .once('value')
     .then((snapshot) => {
       const notes = [];
@@ -90,27 +82,27 @@ function getLinkedNote(user) {
       });
 
       return notes;
-    });
+    })
+    .catch(() => []);
 }
 
-async function tryToGetLinkedNotes(linkedAccounts) {
-  try {
-    const results = await Promise.all(linkedAccounts.map((acc) => getLinkedNote(acc.key)));
+async function getLinkedNotes(linkedAccounts) {
+  const results = await Promise.all(linkedAccounts.map(acc => getLinkedNote(acc.key)));
+  const flattenedResults = results.reduce(
+    (arr, cur) => arr.concat(cur),
+    [],
+  );
 
-    return results[0] || [];
-  } catch(e) {
-    return [];
-  }
+  return flattenedResults;
 }
 
 async function getBeerNotes() {
   const linkedAccounts = await accountService.getLinkedAccounts();
-  const linkedBeerNotes = await tryToGetLinkedNotes(linkedAccounts);
-
+  const linkedBeerNotes = await getLinkedNotes(linkedAccounts);
   const currentUsersNotes = await getCurrentUserBeerNotes();
 
   return [...currentUsersNotes, ...linkedBeerNotes];
-};
+}
 
 export default {
   getBeerNote,

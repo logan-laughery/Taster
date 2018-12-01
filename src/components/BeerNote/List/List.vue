@@ -43,6 +43,11 @@
                     </v-btn>
                   </v-flex>
                 </v-flex>
+                <v-flex d-flex xs12>
+                  <v-flex d-flex xs12>
+                    <div class="caption">Created By: {{note.uid.replace(/%2E/g,'.')}}</div>
+                  </v-flex>
+                </v-flex>
               </v-layout>
             </v-flex>
             <v-flex d-flex xs12>
@@ -77,7 +82,7 @@
                         <div class="subheading none" v-else>No Brewery Provided</div>
                       </v-flex>
                       <v-flex d-flex xs12>
-                        <div class="subheading" v-if="note.beerName">{{note.style}}</div>
+                        <div class="subheading" v-if="note.style">{{note.style}}</div>
                         <div class="subheading none" v-else>No Style Provided</div>
                       </v-flex>
                     </v-layout>
@@ -91,6 +96,11 @@
                     <v-btn flat icon color="black" v-on:click="view(note.id)">
                       <v-icon>visibility</v-icon>
                     </v-btn>
+                  </v-flex>
+                </v-flex>
+                <v-flex d-flex xs12>
+                  <v-flex d-flex xs12>
+                    <div class="caption">Created By: {{note.uid.replace(/%2E/g,'.')}}</div>
                   </v-flex>
                 </v-flex>
               </v-layout>
@@ -134,14 +144,16 @@ export default {
 
     this.notes = await beerNoteService.getBeerNotes();
     this.loading = false;
-    setTimeout(() => { window.dispatchEvent(new Event('resize')) }, 1);
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 1);
   },
   computed: {
     notesInProgress() {
-      return this.notes.filter((note) => note.step !== 'summary');
+      return this.notes.filter(note => note.step !== 'summary');
     },
     notesCompleted() {
-      return this.notes.filter((note) => note.step === 'summary');
+      return this.notes.filter(note => note.step === 'summary');
     },
   },
   methods: {
@@ -154,11 +166,36 @@ export default {
     getFriendlyStep(step) {
       if (step === 'styleselection') {
         return 'Style Selection';
-      } else if (step === 'beerinfo') {
-        return 'Beer Info';
-      } else {
-        return 'Unknown Step';
       }
+      if (step === 'beerinfo') {
+        return 'Beer Info';
+      }
+      if (step === 'clarity') {
+        return 'Clarity';
+      }
+      if (step === 'color') {
+        return 'Color';
+      }
+      if (step === 'head') {
+        return 'Head';
+      }
+      if (step === 'aroma') {
+        return 'Aroma';
+      }
+      if (step === 'flavor') {
+        return 'Flavor';
+      }
+      if (step === 'intro') {
+        return 'Intro';
+      }
+      if (step === 'introsummary') {
+        return 'Intro Summary';
+      }
+      if (step === 'overall') {
+        return 'Overall';
+      }
+
+      return 'Unknown Step';
     },
   },
 };
@@ -173,6 +210,12 @@ export default {
   padding-bottom: 2px;
 }
 .subheading {
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.caption {
   text-align: left;
 }
 .icon-image {

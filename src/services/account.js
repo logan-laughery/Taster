@@ -59,10 +59,14 @@ function removeLinkedAccount(key) {
     .then((snapshot) => snapshot);
 }
 
+function getCurrentUserId() {
+  return firebase.auth().currentUser.email.replace(/\./g,'%2E');
+}
 
 export default {
   googleAuth,
   getCurrentUser,
+  getCurrentUserId,
   logout,
   onAuthChange,
   getLinkedAccounts,

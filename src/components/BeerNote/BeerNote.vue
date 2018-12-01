@@ -46,9 +46,11 @@ export default {
     await this.loadBeerNote();
   },
   watch: {
-    noteId: async function(newVal, oldVal) {
-      await this.loadBeerNote();
-    }
+    async noteId(newVal, oldVal) {
+      if (oldVal !== 'new') {
+        await this.loadBeerNote();
+      }
+    },
   },
   methods: {
     async loadBeerNote() {
