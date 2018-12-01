@@ -127,7 +127,7 @@ export default {
     login() {
       this.$router.push({
         name: 'Login',
-        params: { route: '123' },
+        params: { route: 'login' },
       });
       this.close();
     },

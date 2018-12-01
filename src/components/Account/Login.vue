@@ -23,7 +23,7 @@ export default {
   methods: {
     async googleAuth() {
       await accountService.googleAuth();
-      this.$router.push({ path: this.$route.params.route });
+      this.$router.push({ path: '/beer/new' });
     },
   },
 };

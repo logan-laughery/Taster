@@ -65,7 +65,7 @@ const defaultOptions = {
 };
 
 function getOptions() {
-  const delay = 1000 * 1;
+  const delay = 0;
 
   return new Promise(resolve => setTimeout(() => {
     resolve(defaultOptions);

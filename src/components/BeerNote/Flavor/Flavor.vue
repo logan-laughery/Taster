@@ -31,7 +31,7 @@
                 slot="item"
                 slot-scope="data"
               >
-                <span/>
+                <span :id="data.item"/>
               </template>
             </v-combobox>
           </div>
