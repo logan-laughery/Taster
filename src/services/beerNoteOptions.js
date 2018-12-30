@@ -1,3 +1,4 @@
+import axios from 'axios';
 
 const defaultOptions = {
   styles: [{
@@ -72,6 +73,30 @@ function getOptions() {
   }, delay));
 }
 
+function queryBreweries(search) {
+  const url = `https://us-central1-taster-216901.cloudfunctions.net/breweries?query=${encodeURIComponent(search)}&hitsPerPage=3&clickAnalytics=true&analytics=true&page=0`;
+  return axios.get(url)
+    .then((response) => {
+      return response.data.hits.map(hit => hit.brewery_name);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+function queryBeers(search) {
+  const url = `https://us-central1-taster-216901.cloudfunctions.net/beers?query=${encodeURIComponent(search)}`;
+  return axios.get(url)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
 export default {
   getOptions,
+  queryBreweries,
+  queryBeers,
 };

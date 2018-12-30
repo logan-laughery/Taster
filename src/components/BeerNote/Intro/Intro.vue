@@ -17,22 +17,45 @@
         or begin entering information about the beer
     </h3>
 
-    <v-text-field
+    <!-- <v-text-field
       class="intro-text"
       label="Brewery"
       color="black"
       v-model="note.brewery"
-    />
-    <v-text-field
-      class="intro-text"
+    /> -->
+    <v-combobox
+      :loading="loadingBreweries"
+      :items="breweries"
+      :search-input.sync="brewerySearch"
+      v-model="note.brewery"
+      cache-items
+      hide-no-data
+      hide-details
+      label="Brewery"
+      color="black"
+    >
+    </v-combobox>
+    <v-combobox
+      :loading="loadingBeers"
+      :items="beers"
+      :search-input.sync="beerSearch"
+      v-on:change="beerChange"
+      v-model="note.beerName"
+      cache-items
+      hide-no-data
+      hide-details
+      :return-object="false"
+      item-text="name"
+      item-value="name"
       label="Beer Name"
       color="black"
-      v-model="note.beerName"
-    />
+    >
+    </v-combobox>
   </v-flex>
 </template>
 
 <script scoped>
+import beerNoteOptions from '../../../services/beerNoteOptions';
 import DashedCircle from '@/components/Shared/DashedCircle';
 import ImageInput from '@/components/Shared/ImageInput';
 
@@ -51,10 +74,50 @@ export default {
     });
   },
   props: ['note'],
+  data () {
+      return {
+        breweries: this.note.brewery ? [this.note.brewery] : [],
+        loadingBreweries: false,
+        brewerySearch: null,
+        beers: this.note.beerName ? [{ name: this.note.beerName }] : [],
+        loadingBeers: false,
+        beerSearch: null,
+      };
+  },
+  watch: {
+    beerSearch (val) {
+      val && val !== this.select && val.length > 2 && this.queryBeers(val)
+    },
+    brewerySearch (val) {
+      val && val !== this.select && val.length > 2 && this.queryBreweries(val)
+    },
+  },
   methods: {
     imageInput(event) {
       this.note.image = event.dataUrl;
       this.$router.push({ path: `/beer/${this.note.id}/photoverification` });
+    },
+    async queryBreweries(search) {
+      this.loadingBreweries = true;
+      this.breweries = await beerNoteOptions.queryBreweries(search);
+      this.loadingBreweries = false;
+    },
+    async queryBeers(search) {
+      this.loadingBeers = true;
+      this.beers = await beerNoteOptions.queryBeers(`${this.brewerySearch} ${search}`);
+      this.loadingBeers = false;
+    },
+    beerChange(beer) {
+      const matchingBeer = this.beers
+        .find((search) => search.name === beer);
+
+      if (!matchingBeer) {
+        return;
+      }
+
+      this.note.style = matchingBeer.style;
+      this.note.ibu = matchingBeer.ibu;
+      this.note.alc = matchingBeer.abv;
     },
   },
 };

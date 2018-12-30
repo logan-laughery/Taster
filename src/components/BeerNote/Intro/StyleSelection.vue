@@ -3,12 +3,20 @@
     <h3 class="headline mb-0">
       What's the style?
     </h3>
-    <v-autocomplete
+    <!-- <v-autocomplete
       color="black"
       v-model="note.style"
       :items="options.styles"
+    > -->
+    <v-combobox
+      :items="options.styles"
+      v-model="note.style"
+      hide-no-data
+      hide-details
+      label="Beer Style"
+      color="black"
     >
-    </v-autocomplete>
+    </v-combobox>
   </v-flex>
 </template>
 
