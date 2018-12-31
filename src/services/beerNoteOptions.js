@@ -9,11 +9,7 @@ const defaultOptions = {
     text: 'Amber Ale',
   }],
   headDescriptors: [
-    'fluffy',
-    'lingering',
-    'white',
-    'tan',
-    'dark',
+    'persistent','rocky','large','fluffy','dissipating','lingering','white','off white','tan','frothy','delicate',
     'thin',
   ],
   clarityDescriptors: [
@@ -38,6 +34,7 @@ const defaultOptions = {
     'copper',
     'pale',
     'straw',
+    'honey','caramel','russet red','brown','root beer','amber','chestnut','dark red','apricot','orange','black','burnt auburn','garnet','ruby','copper','deep gold',
   ],
   aromaDescriptors: [
     'burnt',
@@ -50,6 +47,11 @@ const defaultOptions = {
     'clove',
     'fruity',
     'phenolic',
+    'malty','grainy','sweet','corn-like','hay','straw','grahamcracker','biscuity','caramel','toast','roast','coffee','espresso','burnt','alcohol','tobacco','gunpowder','leather','pine','freshcutgrass',
+    'raisins','currant','plum','dates','prunes','figs','blackberry','blueberry',
+    'banana','pineapple','apricot','pear','apple','nectarine','peach','mango','pricklypear',
+    'lemon','lime','orange','tangerine','clementine','grapefruit','lemonzest',
+    'phenolic','white pepper','clove','anise','licorice','smoked bacon','fatty','nutty','butterscotch','vanilla','earthy','woody','horsey','fresh bread','saddle','musty','barnyard',
   ],
   flavorDescriptors: [
     'bready',
@@ -62,6 +64,9 @@ const defaultOptions = {
     'lingering',
     'boozey',
     'warming',
+    'roasted','bready','bitter','sweet','spicy','fruity','chocolate','caramel','toffee','coffee','malty','tart','subtle','woodsy','earthy','sulfuric',
+    'assertive','mild','bold','balanced','robust','intense','metallic','harsh','complex','delicate','refined','hearty',
+    'dry','fruity','sweet','alcoholic','warming','bitter','acidic','buttery','wet','quenching','lingering'
   ],
 };
 

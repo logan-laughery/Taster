@@ -33,7 +33,6 @@
     <v-layout align-center justify-center row fill-height>
       <template v-for="(group, i) in groups">
         <v-icon
-          small
           v-if="i === pageNumber"
           :key="i"
           class="indicator"
@@ -42,7 +41,6 @@
           lens
         </v-icon>
         <v-icon
-          small
           v-else
           :key="i"
           class="indicator"
@@ -66,7 +64,7 @@ export default {
   }),
   computed: {
     groups() {
-      const size = 8;
+      const size = 16;
 
       return this.options.reduce(
         (acc, cur, i) => (i % size ? acc : [...acc, this.options.slice(i, i + size)]),

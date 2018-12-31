@@ -22,7 +22,7 @@ const defaultBeerNote = {
   ],
 };
 
-function getBeerNote(id) {
+async function getBeerNote(id) {
   const userId = accountService.getCurrentUserId();
 
   if (!id) {
@@ -34,14 +34,30 @@ function getBeerNote(id) {
     return newNote;
   }
 
-  return firebase.database().ref(`/beerNotes/${id}`)
+  const note = await firebase.database().ref(`/beerNotes/${id}`)
     .once('value')
     .then(snapshot => Object.assign({}, defaultBeerNote, snapshot.val()));
+
+  // Try to get image url
+  await getImage(note);
+
+  return note;
 }
 
-function saveBeerNote(beerNote) {
-  return firebase.database().ref(`/beerNotes/${beerNote.id}`)
-    .set(beerNote)
+async function saveBeerNote(beerNote) {
+  if (beerNote.image && beerNote.image.startsWith('data:')) {
+    const imagePath = `images/${beerNote.id}.jpg`;
+    const ref = firebase.storage().ref().child(imagePath);
+
+    await ref.putString(beerNote.image, 'data_url');
+    beerNote.imagePath = imagePath;
+    await getImage(beerNote);
+  }
+
+  const beerNoteToSave = Object.assign({}, beerNote, {image: ''});
+
+  return firebase.database().ref(`/beerNotes/${beerNoteToSave.id}`)
+    .set(beerNoteToSave)
     .then(() => beerNote);
 
   // https://stackoverflow.com/questions/29306489/how-to-share-data-between-users-in-firebase
@@ -96,12 +112,25 @@ async function getLinkedNotes(linkedAccounts) {
   return flattenedResults;
 }
 
+async function getImage(note) {
+  if (note.imagePath) {
+    const image = await firebase.storage().ref()
+      .child(note.imagePath).getDownloadURL();
+
+    note.image = image;
+  }
+
+  return note;
+}
+
 async function getBeerNotes() {
   const linkedAccounts = await accountService.getLinkedAccounts();
   const linkedBeerNotes = await getLinkedNotes(linkedAccounts);
   const currentUsersNotes = await getCurrentUserBeerNotes();
 
-  return [...currentUsersNotes, ...linkedBeerNotes];
+  const notes = [...currentUsersNotes, ...linkedBeerNotes];
+
+  return Promise.all(notes.map(getImage));
 }
 
 export default {
