@@ -1,7 +1,7 @@
 <template>
   <svg viewBox="0 0 220 320">
     <rect x="10" y="5" rx="20" ry="20" width="200" height="300" class="dashed" />
-    <foreignObject x="10" y="5" height="100px" width="100px">
+    <foreignObject x="10" y="5" height="300" width="200">
       <div>
         <slot/>
       </div>

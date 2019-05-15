@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import fixOrientation from 'fix-orientation';
+
 export default {
   name: 'image-input',
   data: () => ({
@@ -45,7 +47,13 @@ export default {
           formData.append(fieldName, imageFile);
           const reader = new FileReader();
           reader.onload = (e) => {
-            this.$emit('input', { formData, imageURL, dataUrl: e.target.result });
+            fixOrientation(e.target.result, { image: true }, (fixed, image) => {
+              this.$emit('input', { formData, imageURL, dataUrl: fixed });              
+              // var img = new Image();
+              // img.src = fixed;
+              // document.body.appendChild(img);
+              // document.body.appendChild(image);
+            });
           };
           reader.readAsDataURL(imageFile);
         }

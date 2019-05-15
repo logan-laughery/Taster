@@ -15,6 +15,9 @@
       hide-details
       label="Beer Style"
       color="black"
+      item-text="text"
+      item-value="text"
+      :return-object="false"
     >
     </v-combobox>
   </v-flex>
@@ -36,7 +39,7 @@ export default {
     beerNoteService.saveBeerNote(this.note);
     this.$store.commit('beerNote/updateFooterNav', {
       forwardRoute: `/beer/${this.note.id}/beerinfo`,
-      backRoute: `/beer/${this.note.id}/intro`,
+      backRoute: `/beer/${this.note.id}/photoverification`,
       upperText: 'Intro 2/4',
       lowerText: 'Overall Progress 10%',
     });

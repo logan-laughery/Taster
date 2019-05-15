@@ -2,41 +2,43 @@ import firebase from 'firebase';
 import shortid from 'shortid';
 import accountService from './account';
 
-const defaultBeerNote = {
-  step: 'intro',
-  head: [],
-  color: [],
-  clarity: [],
-  aroma: [],
-  flavor: [],
-  characteristics: [
-    { key: 'LINGER', value: 1 },
-    { key: 'BODY', value: 1 },
-    { key: 'DRY', value: 1 },
-    { key: 'BITTER', value: 1 },
-    { key: 'SOUR', value: 1 },
-    { key: 'MALTY', value: 1 },
-    { key: 'FLORAL', value: 1 },
-    { key: 'HOPPY', value: 1 },
-    { key: 'CITRUS', value: 1 },
-  ],
+function getDefaultBeerNote() {
+  return {
+    step: 'intro',
+    head: [],
+    color: [],
+    clarity: [],
+    aroma: [],
+    flavor: [],
+    characteristics: [
+      { key: 'LINGER', value: 1 },
+      { key: 'BODY', value: 1 },
+      { key: 'DRY', value: 1 },
+      { key: 'BITTER', value: 1 },
+      { key: 'SOUR', value: 1 },
+      { key: 'MALTY', value: 1 },
+      { key: 'FLORAL', value: 1 },
+      { key: 'HOPPY', value: 1 },
+      { key: 'CITRUS', value: 1 },
+    ],
+  };
 };
 
 async function getBeerNote(id) {
   const userId = accountService.getCurrentUserId();
 
   if (!id) {
-    const newNote = Object.assign({}, defaultBeerNote, {
+    const newNote = Object.assign({}, getDefaultBeerNote(), {
       id: shortid.generate(),
       uid: userId,
     });
-
+    console.log(newNote);
     return newNote;
   }
 
   const note = await firebase.database().ref(`/beerNotes/${id}`)
     .once('value')
-    .then(snapshot => Object.assign({}, defaultBeerNote, snapshot.val()));
+    .then(snapshot => Object.assign({},  getDefaultBeerNote(), snapshot.val()));
 
   // Try to get image url
   await getImage(note);

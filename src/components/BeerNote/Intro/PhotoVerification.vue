@@ -17,42 +17,53 @@
           outline color="black"
           v-on:click="imageInput"
         >
-          Select Another Photo
+          Select Different Photo
         </v-btn>
       </image-input>
     </v-flex>
     <v-flex class="identification-container">
-      <DashedSpinner v-if="identifying">
+      <!-- <DashedSpinner v-if="identifying">
         Identifying...
-      </DashedSpinner>
-      <template v-else>
-        <template v-if="match">
-          <h3>A match was found!</h3>
-        </template>
-        <template v-else>
+      </DashedSpinner> -->
+      <template>
           <h3>
-            Beer couldn't be identified.  You'll have to enter
-            info about the beer manually.
+            What are you drinking?
           </h3>
-          <v-text-field
-            class="intro-text"
+          <v-combobox
+            :loading="loadingBreweries"
+            :items="breweries"
+            :search-input.sync="brewerySearch"
+            v-model="note.brewery"
+            cache-items
+            hide-no-data
+            hide-details
             label="Brewery"
             color="black"
-            v-model="note.brewery"
-          />
-          <v-text-field
-            class="intro-text"
+          >
+          </v-combobox>
+          <v-combobox
+            :loading="loadingBeers"
+            :items="beers"
+            :search-input.sync="beerSearch"
+            v-on:change="beerChange"
+            v-model="note.beerName"
+            cache-items
+            hide-no-data
+            hide-details
+            :return-object="false"
+            item-text="name"
+            item-value="name"
             label="Beer Name"
             color="black"
-            v-model="note.beerName"
-          />
-        </template>
+          >
+          </v-combobox>
       </template>
     </v-flex>
   </v-flex>
 </template>
 
 <script>
+import beerNoteOptions from '../../../services/beerNoteOptions';
 import beerNoteService from '../../../services/beerNote';
 import DashedBorder from '@/components/Shared/DashedBorder';
 import ImageInput from '@/components/Shared/ImageInput';
@@ -70,6 +81,12 @@ export default {
       image: '',
       identifying: true,
       match: {},
+      breweries: this.note.brewery ? [this.note.brewery] : [],
+      loadingBreweries: false,
+      brewerySearch: null,
+      beers: this.note.beerName ? [{ name: this.note.beerName }] : [],
+      loadingBeers: false,
+      beerSearch: null,
     };
   },
   async mounted() {
@@ -82,8 +99,16 @@ export default {
       lowerText: 'Overall Progress 10%',
     });
 
-    this.match = await identificationService.identifyBeer(this.note.image);
-    this.identifying = false;
+    // this.match = await identificationService.identifyBeer(this.note.image);
+    // this.identifying = false;
+  },
+  watch: {
+    beerSearch (val) {
+      val && val !== this.select && val.length > 2 && this.queryBeers(val)
+    },
+    brewerySearch (val) {
+      val && val !== this.select && val.length > 2 && this.queryBreweries(val)
+    },
   },
   methods: {
     async imageInput(event) {
@@ -94,6 +119,28 @@ export default {
         this.match = await identificationService.identifyBeer(this.note.image);
         this.identifying = false;
       }
+    },
+    async queryBreweries(search) {
+      this.loadingBreweries = true;
+      this.breweries = await beerNoteOptions.queryBreweries(search);
+      this.loadingBreweries = false;
+    },
+    async queryBeers(search) {
+      this.loadingBeers = true;
+      this.beers = await beerNoteOptions.queryBeers(`${this.brewerySearch} ${search}`);
+      this.loadingBeers = false;
+    },
+    beerChange(beer) {
+      const matchingBeer = this.beers
+        .find((search) => search.name === beer);
+
+      if (!matchingBeer) {
+        return;
+      }
+
+      this.note.style = matchingBeer.style;
+      this.note.ibu = matchingBeer.ibu;
+      this.note.alc = matchingBeer.abv;
     },
   },
 };
